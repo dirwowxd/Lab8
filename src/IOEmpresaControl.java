@@ -10,7 +10,7 @@ public class IOEmpresaControl {
         LocalDate fecha = LocalDate.now();
         DateTimeFormatter horaformato = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalTime horaActual = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String nombreArchivo = "Ingreso_Empleados_Fecha_" + fecha.format(formatter) + ".txt";
         try (FileWriter fw = new FileWriter(nombreArchivo, true);
              BufferedWriter bw = new BufferedWriter(fw)) {
@@ -18,12 +18,13 @@ public class IOEmpresaControl {
             DateTimeFormatter hora = DateTimeFormatter.ofPattern("HH:mm:ss");
 
             String linea = rut + " | " + nombre + " | " + horaIngresoEmpleado;
-            if (horaActual.isAfter(horaIngreso)) {
-                linea += "Atraso";
+            if (horaIngresoEmpleado.isAfter(horaIngreso)) {
+                linea += " <-ATRASO";
                 System.out.println(linea);
             }
             bw.write(linea);
             bw.newLine();
+            System.out.println("Se ha ingresado correctamente");
 
         } catch (IOException e) {
             System.out.println("Error : " + e.getMessage());
@@ -35,17 +36,16 @@ public class IOEmpresaControl {
         DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalTime horaActual = LocalTime.now();
         DateTimeFormatter horaformato = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String nombreArchivo = "Ingreso_Empleados_Fecha_" + fechaActual.format(horaformato) + ".txt";
+        String nombreArchivo = "Salida_Empleados_Fecha_" + fechaActual.format(fechaFormato) + ".txt";
         try (FileWriter fw = new FileWriter(nombreArchivo, true);
              BufferedWriter bw = new BufferedWriter(fw)) {
             LocalTime horaSalida = LocalTime.of(17, 0);
-            DateTimeFormatter horaFormato = DateTimeFormatter.ofPattern("HH:mm:ss");
             String linea = rut + " | " + nombre + " | " + horaSalidaEmpleado;
-            if (horaActual.isAfter(horaSalida)) {
-                Duration duracion = Duration.between(horaSalida, horaActual);
+            if (horaSalidaEmpleado.isAfter(horaSalida)) {
+                Duration duracion = Duration.between(horaSalida, horaSalidaEmpleado);
                 long horasExtras = duracion.toHours();
                 long minutosExtras = duracion.toMinutesPart();
-                linea += "Hora extras " + horasExtras + " minutos " + minutosExtras;
+                linea += " Tiempo Extra: " + horasExtras + "h " + minutosExtras +"m";
                 System.out.println(linea);
             }
             bw.write(linea);
@@ -66,11 +66,15 @@ public class IOEmpresaControl {
             System.out.println("El archivo no existe");
             return;
         }
+        if (file.length() == 0) {
+            System.out.println("El archivo esta vacio");
+            return;
+        }
         try (FileReader fr = new FileReader(file);
              BufferedReader br = new BufferedReader(fr)) {
             String linea;
+            System.out.println("\n--- REGISTROS DE INGRESO DEL DÍA ---");
             while ((linea = br.readLine()) != null) {
-                System.out.println("\n--- REGISTROS DE INGRESO DEL DÍA ---");
                 System.out.println(linea);
             }
         } catch (IOException e) {
@@ -89,11 +93,15 @@ public class IOEmpresaControl {
             System.out.println("El archivo no existe");
             return;
         }
+        if (file.length() == 0) {
+            System.out.println("El archivo esta vacio");
+            return;
+        }
         try (FileReader fr = new FileReader(file);
              BufferedReader br = new BufferedReader(fr)) {
             String linea;
+            System.out.println("\n--- REGISTROS DE SALIDA DEL DÍA ---");
             while ((linea = br.readLine()) != null) {
-                System.out.println("\n--- REGISTROS DE SALIDA DEL DÍA ---");
                 System.out.println(linea);
 
             }

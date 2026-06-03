@@ -1,5 +1,5 @@
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
@@ -19,21 +19,22 @@ public class Main {
             sc.nextLine();
             switch (opcion) {
                 case 1:
-                    System.out.println("Rut");
+                    System.out.print("Rut : ");
                     String rut= sc.nextLine();
-                    System.out.println("Nombre ");
+                    System.out.print("Nombre : ");
                     String nombre= sc.nextLine();
-                    System.out.println("Horario de entrada");
+                    System.out.print("Horario de entrada : ");
                     LocalTime horario= LocalTime.parse(sc.nextLine());
                     Control.registrarArchivoIngreso(rut, nombre, horario);
                     break;
                 case 2:
-                    System.out.println("Rut");
+                    System.out.print("Rut : ");
                     String rutSalida= sc.nextLine();
-                    System.out.println("Nombre ");
+                    System.out.print("Nombre : ");
                     String nombreSalida= sc.nextLine();
-                    System.out.println("Horario de entrada");
-                   LocalTime horarioSalida= LocalTime.parse(sc.nextLine());
+                    System.out.print("Horario de salida : ");
+                    DateTimeFormatter formatoFlexible = DateTimeFormatter.ofPattern("H:mm");
+                   LocalTime horarioSalida= LocalTime.parse(sc.nextLine(), formatoFlexible);
                    Control.registrarArchivoSalida(rutSalida, nombreSalida, horarioSalida);
                     break;
                 case 3:
